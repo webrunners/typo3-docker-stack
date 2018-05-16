@@ -1,0 +1,3 @@
+CI_JOB_TOKEN=${CI_JOB_TOKEN:=}
+DEBUG=${DEBUG:=}
+REGISTRY=registry.webrunners.de

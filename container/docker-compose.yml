@@ -1,0 +1,71 @@
+version: '2.3'
+
+services:
+  cronjob-typo3:
+    image: blacklabelops/jobber:docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "JOB_NAME1=TYPO3_SCHEDULER"
+      - "JOB_COMMAND1=timeout -t 10 docker exec -u www-data $$(docker ps -aqf 'name=t3stack_php') /var/www/html/vendor/bin/typo3cms scheduler:run"
+      - "JOB_TIME1=0 */1 * * * *"
+    restart: always
+    depends_on:
+      - "php"
+
+  db:
+    image: mariadb:10.1
+    restart: unless-stopped
+    env_file:
+      - ./env/defaults
+      - ./env/dev
+    ports:
+     - "127.0.0.1:13306:3306"
+    volumes:
+      - db:/var/lib/mysql
+    command: ["--character-set-server=utf8mb4","--collation-server=utf8mb4_unicode_ci"]
+
+  php:
+    restart: unless-stopped
+    env_file:
+      - ./env/defaults
+      - ./env/dev
+    build:
+      context: .
+      dockerfile: php.Dockerfile
+      args:
+        # export your $UID to permit www-data writes
+        # to build image manually: $ cd container && docker build --build-arg cUID=$UID -f php.Dockerfile -t webrunners/php5.7-fpm-composer .
+        - cUID
+    volumes:
+      - ./..:/var/www/html:rw
+      - ./conf/typo3/AdditionalConfiguration.php:/var/www/html/wwwroot/typo3conf/AdditionalConfiguration.php:ro
+      - ./conf/typo3/constants.typoscript:/var/www/html/wwwroot/typo3conf/constants.ts:ro
+
+  smtp:
+    image: mailhog/mailhog
+    ports:
+      - "127.0.0.1:8025:8025"
+
+  web:
+    restart: unless-stopped
+    env_file:
+      - ./env/defaults
+      - ./env/dev
+    build:
+      context: .
+      dockerfile: web.Dockerfile
+      args:
+        # export your $UID to permit nginx reads
+        # to build image manually: $ cd container &&  docker build --build-arg cUID=$UID -f web.Dockerfile -t webrunners/nginx .
+        - cUID
+    ports:
+      - "127.0.0.1:8888:8888"
+    volumes:
+      - ./conf/nginx/site.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./..:/var/www/html:ro
+    depends_on:
+      - php
+
+volumes:
+  db:

@@ -1,0 +1,8 @@
+/*
+    Host specific settings for
+	http://localhost:8888
+	context: constants
+*/
+
+# enable/disable eg piwik
+config.webrunners.stats = 0
