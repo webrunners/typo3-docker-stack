@@ -35,3 +35,8 @@ we use wwwroot as our webroot. Lets setup a fresh TYPO3 installation:
 [access typo3 backend](http://localhost:8888/typo3/)  
 [access typo3 frontend](http://localhost:8888)  
 [access fake smtp server](http://localhost:8025)
+
+
+# contributing
+
+Want to help build this stack? Check the [contributing documentation](CONTRIBUTING.md)
