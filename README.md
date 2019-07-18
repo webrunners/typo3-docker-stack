@@ -19,16 +19,22 @@ If you change any of the _*.Dockerfile_ tell docker to build an updated image
 
 ## web root
 
-we use wwwroot as our webroot. Lets setup a fresh TYPO3 installation:
+We use _wwwroot_ as our webroot. Lets setup a fresh TYPO3 installation:
 
 ```bash
 ./container/bin/composer.sh init
 ./container/bin/composer.sh config extra.typo3/cms.cms-package-dir '{$vendor-dir}/typo3/cms'
 ./container/bin/composer.sh config extra.typo3/cms.web-dir 'wwwroot'
-./container/bin/composer.sh require typo3/cms helhum/typo3-console
+./container/bin/composer.sh require typo3/minimal helhum/typo3-console
 ./container/bin/typo3cms.sh install:setup
-./container/bin/typo3cms.sh install:fixfolderstructure
 ```
+
+You will need db credentials during _install:setup_:
+
+database-username: typo3  
+database-password: typo3  
+database-name: typo3  
+database-host: db
 
 ### endpoints
 

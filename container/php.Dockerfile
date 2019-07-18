@@ -1,25 +1,23 @@
-FROM php:7.1-fpm
+FROM php:7.2-fpm-stretch
 
 ENV DEBIAN_FRONTEND=noninteractive TERM=linux
 
 RUN apt-get update && apt-get install -y --no-install-recommends\
  git\
+ ghostscript \
  graphicsmagick\
+ libc6-dev \
  libcurl4-openssl-dev\
  libfreetype6-dev\
  libgd-dev\
  libjpeg62-turbo-dev\
- libpng-dev\
+ libpng16-16\
  libxml2-dev\
  locales\
  openssh-client\
- python\
- python-pip\
  zlib1g-dev\
  && apt-get clean\
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN pip install unicodecsv
 
 RUN curl https://composer.github.io/installer.sig -s 2>&1 | tr -d '\n' > installer.sig\
  && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"\

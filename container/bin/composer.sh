@@ -9,4 +9,4 @@ else
     params=" -T"     # no tty
 fi
 
-exec ./run.sh$params exec -u www-data php composer ${@:-list}
+exec ./run.sh$params exec -u www-data php composer ${@:-help}
