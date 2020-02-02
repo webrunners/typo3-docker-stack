@@ -26,7 +26,7 @@ we use wwwroot as our webroot. Lets setup a fresh TYPO3 installation:
 ./container/bin/composer.sh config extra.typo3/cms.cms-package-dir '{$vendor-dir}/typo3/cms'
 ./container/bin/composer.sh config extra.typo3/cms.web-dir 'wwwroot'
 ./container/bin/composer.sh require typo3/cms helhum/typo3-console
-./container/bin/typo3cms.sh install:setup
+./container/bin/typo3cms.sh install:setup --database-user-name="typo3" --database-host-name="db" --database-port="3306"
 ./container/bin/typo3cms.sh install:fixfolderstructure
 ```
 
